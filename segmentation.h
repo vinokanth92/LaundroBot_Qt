@@ -3,21 +3,15 @@
 
 #include <QObject>
 #include <opencv2/opencv.hpp>
+#include <QPixmap>
 
-
-class Segmentation
+namespace Segmentation
 {
-public:
-    Segmentation();
-    ~Segmentation();
-
-private:
-    cv::Mat inputImage;
-    cv::Mat outputImage;
     int k;
-    cv::Mat getSamplesFromImage(cv::Mat inputImage);
-    void compute();
+    cv::Mat getSegments(cv::Mat inputImage);
+    cv::Mat sampleInput(cv::Mat &inputImage);
 
-};
+
+}
 
 #endif // SEGMENTATION_H

@@ -34,3 +34,8 @@ HEADERS  += mainwindow.h \
     segmentation.h
 
 FORMS    += mainwindow.ui
+
+QMAKE_CXXFLAGS += -P
+#QMAKE_CXXFLAGS_RELEASE += -P
+#QMAKE_CXXFLAGS_DEBUG += -E
+#QMAKE_CXXFLAGS += -E

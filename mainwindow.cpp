@@ -4,6 +4,7 @@
 #include <QString>
 #include <QDebug>
 #include <QRectF>
+#include <segmentation.h>
 
 MainWindow::MainWindow(QWidget *parent):QMainWindow(parent),ui(new Ui::MainWindow)
 {
@@ -16,7 +17,6 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
 void MainWindow::on_loadImageButton_clicked()
 {
     QFileDialog fileDialog(this, Qt::Dialog);
@@ -27,12 +27,13 @@ void MainWindow::on_loadImageButton_clicked()
 
     QStringList selectedFileName = fileDialog.selectedFiles();
     QString selectedFile = selectedFileName.at(0);
-    this->inputImage.load(selectedFile);
+    _inputImage.load(selectedFile);
+    _rawInputImage = cv::imread(selectedFile.toStdString());
 
-    this->inputImagePixmapItem.setPixmap((this->inputImage));
-    this->scene.addItem(&this->inputImagePixmapItem);
-    this->ui->inputImageViewWidget->setScene(&this->scene);
-    this->ui->inputImageViewWidget->fitInView(&this->inputImagePixmapItem,Qt::KeepAspectRatio);
+    _inputImagePixmapItem.setPixmap((_inputImage));
+    _scene.addItem(&_inputImagePixmapItem);
+    this->ui->inputImageViewWidget->setScene(&_scene);
+    this->ui->inputImageViewWidget->fitInView(&_inputImagePixmapItem, Qt::KeepAspectRatio);
 
     fileDialog.saveState();
     return;
@@ -40,5 +41,13 @@ void MainWindow::on_loadImageButton_clicked()
 
 void MainWindow::on_clearScreenButton_clicked()
 {
-    this->scene.removeItem(&this->inputImagePixmapItem);
+    _scene.removeItem(&_inputImagePixmapItem);
+    return;
 }
+
+void MainWindow::on_segmentButton_clicked()
+{
+    cv::Mat segmentedOutputImage = Segmentation::getSegments(_rawInputImage);
+}
+
+
